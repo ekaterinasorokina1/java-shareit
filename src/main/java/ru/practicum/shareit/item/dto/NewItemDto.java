@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class ItemDto {
-    private int id;
-
+public class NewItemDto {
     @NotNull
     @NotBlank
     private String name;
@@ -17,7 +15,5 @@ public class ItemDto {
     private String description;
 
     @NotNull
-    private boolean available;
-
-    private Long ownerId;
+    private Boolean available;
 }
