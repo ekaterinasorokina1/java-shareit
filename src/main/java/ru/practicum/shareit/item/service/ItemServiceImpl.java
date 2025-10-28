@@ -116,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещь с id = " + itemId + " не найден"));
 
-        if (bookingRepository.findFirstByItemIdAndUserIdAndStatusAndEndBefore(itemId, userId, StatusEnum.APPROVED, LocalDateTime.now())
+        if (bookingRepository.findFirstByItemIdAndBookerIdAndStatusAndEndBefore(itemId, userId, StatusEnum.APPROVED, LocalDateTime.now())
                 .isEmpty()) {
             throw new ValidationException("Завершенного бронирования не найдено");
         }
