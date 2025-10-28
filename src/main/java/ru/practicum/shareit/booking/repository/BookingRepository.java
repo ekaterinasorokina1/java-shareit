@@ -16,7 +16,7 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     )
     Optional<Booking> findByUserIdOrBookerId(Long bookingId, Long userId);
 
-    Optional<Booking> findFirstByItemIdAndBookerIdAndStatusAndEndBefore(Long itemId, Long userId, StatusEnum status, LocalDateTime date);
+    Optional<Booking> findFirstByItemIdAndBookerIdAndStatusAndEndDateBefore(Long itemId, Long userId, StatusEnum status, LocalDateTime date);
 
     List<Booking> findByBookerIdOrderByStartDate(Long bookerId);
 
