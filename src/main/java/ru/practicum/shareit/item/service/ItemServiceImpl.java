@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingItemDto;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.StatusEnum;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
@@ -107,6 +108,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentDto createComment(Long itemId, Long userId, String text) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден"));
@@ -114,9 +116,10 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещь с id = " + itemId + " не найден"));
 
-        bookingRepository.findByItemIdAndBookerIdAndEndDateBefore(itemId, userId, LocalDateTime.now())
-                .orElseThrow(() -> new ValidationException("Завершенного бронирования не найдено"));
-
+        if (bookingRepository.findFirstByItemIdAndUserIdAndStatusAndEndBefore(itemId, userId, StatusEnum.APPROVED, LocalDateTime.now())
+                .isEmpty()) {
+            throw new ValidationException("Завершенного бронирования не найдено");
+        }
         return CommentMapper.mapToCommentDto(commentRepository.save(CommentMapper.mapToComment(item, user, text)));
     }
 

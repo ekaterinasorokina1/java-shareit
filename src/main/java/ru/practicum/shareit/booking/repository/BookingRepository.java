@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.StateEnum;
+import ru.practicum.shareit.booking.model.StatusEnum;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     )
     Optional<Booking> findByUserIdOrBookerId(Long bookingId, Long userId);
 
-    Optional<Booking> findByItemIdAndBookerIdAndEndDateBefore(Long itemId, Long userId, LocalDateTime date);
+    Optional<Booking> findFirstByItemIdAndUserIdAndStatusAndEndBefore(Long itemId, Long userId, StatusEnum status, LocalDateTime date);
 
     List<Booking> findByBookerIdOrderByStartDate(Long bookerId);
 
