@@ -33,11 +33,11 @@ class GatewayUserControllerTest {
     void shouldGetUserById() throws Exception {
         Long userId = 1L;
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "name": "Kate",
                     "email": "user@mail.com"
-                }
+                }]
                 """;
 
         when(userClient.getUserById(userId))
@@ -79,11 +79,11 @@ class GatewayUserControllerTest {
         userDto.setEmail("user@mail.ru");
 
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "name": "New user",
                     "email": "user@mail.ru"
-                }
+                }]
                 """;
 
         when(userClient.createUser(any(NewUserDto.class)))
@@ -104,11 +104,11 @@ class GatewayUserControllerTest {
         updateDto.setEmail("updateuser@mail.ru");
 
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "name": "Updated User",
                     "email": "updated@example.com"
-                }
+                }]
                 """;
 
         when(userClient.updateUser(eq(userId), any(UpdateUser.class)))

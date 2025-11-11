@@ -33,12 +33,12 @@ public class GatewayItemControllerTest {
         Long itemId = 1L;
         Long userId = 1L;
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "name": "Test Item",
                     "description": "Test Description",
                     "available": true
-                }
+                }]
                 """;
 
         when(itemClient.getItemById(itemId, userId))
@@ -84,12 +84,12 @@ public class GatewayItemControllerTest {
         newItem.setRequestId(1L);
 
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "name": "item name",
                     "description": "item description",
                     "available": true
-                }
+                }]
                 """;
 
         when(itemClient.createItem(eq(userId), any(NewItemDto.class)))
@@ -115,12 +115,12 @@ public class GatewayItemControllerTest {
         itemDto.setAvailable(false);
 
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "name": "Updated Item",
                     "description": "Updated Description",
                     "available": false
-                }
+                }]
                 """;
 
         when(itemClient.updateItem(eq(itemId), eq(userId), any(UpdateItemDto.class)))

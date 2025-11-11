@@ -78,12 +78,12 @@ public class GatewayRequestControllerTest {
         Long requestId = 1L;
         Long userId = 1L;
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "description": "Need a drill",
                     "created": "2025-10-01T10:00:00",
                     "items": []
-                }
+                }]
                 """;
 
         when(requestClient.getRequestById(requestId, userId))
@@ -103,11 +103,11 @@ public class GatewayRequestControllerTest {
         dto.setDescription("New request");
 
         String expectedResponse = """
-                {
+                [{
                     "id": 1,
                     "description": "New request",
                     "created": "2025-11-01T10:00:00"
-                }
+                }]
                 """;
 
         when(requestClient.createRequest(any(Long.class), any(NewRequestDto.class)))

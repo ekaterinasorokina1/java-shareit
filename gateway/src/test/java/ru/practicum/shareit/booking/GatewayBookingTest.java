@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
 
+
 @WebMvcTest(BookingController.class)
 public class GatewayBookingTest {
     @Autowired
@@ -53,15 +54,15 @@ public class GatewayBookingTest {
 
     @Test
     void shouldGetBookingById() throws Exception {
-        long userId = 1L;
+        Long userId = 1L;
         Long bookingId = 100L;
         String expectedResponse = """
-                {
+                [{
                     "id": 100,
                     "start": "2025-10-01T10:00:00",
                     "end": "2025-10-10T10:00:00",
                     "status": "APPROVED"
-                }
+                }]
                 """;
 
         when(bookingClient.getBooking(userId, bookingId))
@@ -80,12 +81,12 @@ public class GatewayBookingTest {
         newBooking.setItemId(1L);
 
         String expectedResponse = """
-                {
+                [{
                     "id": 101,
                     "start": "2025-10-01T10:00:00",
                     "end": "2025-10-10T10:00:00",
                     "status": "WAITING"
-                }
+                }]
                 """;
 
         when(bookingClient.bookItem(eq(userId), any(NewBookingDto.class)))
