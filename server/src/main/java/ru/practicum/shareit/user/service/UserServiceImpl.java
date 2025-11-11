@@ -24,6 +24,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public UserDto create(NewUserDto newUser) {
+        Optional<User> userExists = userRepository.findByEmail(newUser.getEmail());
+
+        if (userExists.isPresent() ) {
+            log.error("Данный email уже используется");
+            throw new ConflictException("Данный email занят");
+        }
         User user = userRepository.save(UserMapper.mapToUser(newUser));
         return UserMapper.mapToUserDto(user);
     }
