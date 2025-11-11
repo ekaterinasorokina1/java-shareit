@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
 
-
 @WebMvcTest(BookingController.class)
 public class GatewayBookingTest {
     @Autowired
@@ -54,7 +53,7 @@ public class GatewayBookingTest {
 
     @Test
     void shouldGetBookingById() throws Exception {
-        Long userId = 1L;
+        long userId = 1L;
         Long bookingId = 100L;
         String expectedResponse = """
                 {

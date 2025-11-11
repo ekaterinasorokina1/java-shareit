@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ru.practicum.shareit.request.dto.NewRequestDto;
 
-
 @WebMvcTest(RequestController.class)
 public class GatewayRequestControllerTest {
     @Autowired

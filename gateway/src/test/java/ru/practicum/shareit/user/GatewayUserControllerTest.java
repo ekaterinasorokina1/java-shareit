@@ -43,7 +43,6 @@ class GatewayUserControllerTest {
         when(userClient.getUserById(userId))
                 .thenReturn(ResponseEntity.ok(expectedResponse));
 
-        // when & then
         mockMvc.perform(get("/users/{id}", userId))
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectedResponse));
@@ -75,7 +74,6 @@ class GatewayUserControllerTest {
 
     @Test
     void shouldAddUser() throws Exception {
-        // given
         NewUserDto userDto = new NewUserDto();
         userDto.setName("New user");
         userDto.setEmail("user@mail.ru");
@@ -91,7 +89,6 @@ class GatewayUserControllerTest {
         when(userClient.createUser(any(NewUserDto.class)))
                 .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(expectedResponse));
 
-        // when & then
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDto)))
@@ -101,7 +98,6 @@ class GatewayUserControllerTest {
 
     @Test
     void shouldUpdateUser() throws Exception {
-        // given
         Long userId = 1L;
         UpdateUser updateDto = new UpdateUser();
         updateDto.setName("Update user");

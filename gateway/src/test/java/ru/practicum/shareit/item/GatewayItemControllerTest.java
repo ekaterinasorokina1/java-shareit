@@ -68,7 +68,6 @@ public class GatewayItemControllerTest {
         when(itemClient.getAllItems(userId))
                 .thenReturn(ResponseEntity.ok(expectedResponse));
 
-        // when & then
         mockMvc.perform(get("/items")
                         .header(headerName, userId))
                 .andExpect(status().isOk())
@@ -77,7 +76,6 @@ public class GatewayItemControllerTest {
 
     @Test
     void shouldPostItem() throws Exception {
-        // given
         Long userId = 1L;
         NewItemDto newItem = new NewItemDto();
         newItem.setDescription("item description");
