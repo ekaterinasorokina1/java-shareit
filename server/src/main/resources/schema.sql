@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS items (
   available boolean,
   CONSTRAINT pk_item PRIMARY KEY (id),
   owner_id INTEGER REFERENCES users (id) ON DELETE RESTRICT,
-  request_id INTEGER REFERENCES requests (id),
+  request_id INTEGER REFERENCES requests (id)
 );
 
 CREATE TABLE IF NOT EXISTS comments (
@@ -40,5 +40,5 @@ CREATE TABLE IF NOT EXISTS requests (
   CONSTRAINT pk_request PRIMARY KEY (id),
   description VARCHAR(255),
   created TIMESTAMP WITHOUT TIME ZONE,
-  requestor_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
+  requestor_id INTEGER REFERENCES users (id) ON DELETE CASCADE
 );
