@@ -16,11 +16,14 @@ import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.Request;
+import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +33,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final CommentRepository commentRepository;
     private final BookingRepository bookingRepository;
+    private final RequestRepository requestRepository;
 
     @Override
     public ItemFullInfoDto getById(Long itemId, Long userId) {
@@ -41,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
 
         BookingItemDto lastBookingItem = null;
         BookingItemDto nextBookingItem = null;
-        if (item.getOwnerId().equals(userId)) {
+        if (item.getOwner().getId().equals(userId)) {
             List<Booking> listLastBooking = bookingRepository.findByItemIdAndEndDateBeforeOrderByEndDateDesc(item.getId(), LocalDateTime.now());
             if (!listLastBooking.isEmpty()) {
                 lastBookingItem = BookingMapper.mapToBookingItemDto(listLastBooking.getFirst());
@@ -58,19 +62,35 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemDto create(NewItemDto newItem, Long userId) {
-        checkIfUserExist(userId);
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден"));
 
-        Item item = itemRepository.save(ItemMapper.mapToItem(newItem, userId));
+        Item mapItem = ItemMapper.mapToItem(newItem, owner);
+
+        if (newItem.getRequestId() != null) {
+            Optional<Request> request = requestRepository.findById(newItem.getRequestId());
+            request.ifPresent(mapItem::setRequest);
+        }
+
+        Item item = itemRepository.save(mapItem);
         return ItemMapper.mapToItemDto(item);
     }
 
     @Override
     @Transactional
     public ItemDto update(Long itemId, Long userId, UpdateItemDto updateItem) {
-        checkIfUserExist(userId);
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден"));
+
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещь с id = " + itemId + " не найден"));
-        ItemMapper.updateItemFields(item, updateItem);
+        ItemMapper.updateItemFields(item, updateItem, owner);
+
+        if (updateItem.getRequestId() != null) {
+            Optional<Request> request = requestRepository.findById(updateItem.getRequestId());
+            request.ifPresent(item::setRequest);
+        }
+
         item = itemRepository.save(item);
         return ItemMapper.mapToItemDto(item);
     }

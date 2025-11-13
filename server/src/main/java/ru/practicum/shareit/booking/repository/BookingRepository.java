@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface BookingRepository extends CrudRepository<Booking, Long> {
     @Query("select b from Booking b " +
-            "where b.id = ?1 and (b.booker.id = ?2 or b.item.ownerId = ?2)"
+            "where b.id = ?1 and (b.booker.id = ?2 or b.item.owner.id = ?2)"
     )
     Optional<Booking> findByUserIdOrBookerId(Long bookingId, Long userId);
 

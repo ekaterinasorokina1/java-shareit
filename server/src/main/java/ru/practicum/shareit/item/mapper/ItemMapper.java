@@ -3,18 +3,18 @@ package ru.practicum.shareit.item.mapper;
 import ru.practicum.shareit.booking.dto.BookingItemDto;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 
 
 public class ItemMapper {
-    public static Item mapToItem(NewItemDto newItem, long userId) {
+    public static Item mapToItem(NewItemDto newItem, User user) {
         Item item = new Item();
         item.setName(newItem.getName());
         item.setDescription(newItem.getDescription());
         item.setAvailable(newItem.getAvailable());
-        item.setOwnerId(userId);
-        item.setRequestId(newItem.getRequestId());
+        item.setOwner(user);
         return item;
     }
 
@@ -24,7 +24,7 @@ public class ItemMapper {
         dto.setName(item.getName());
         dto.setAvailable(item.getAvailable());
         dto.setDescription(item.getDescription());
-        dto.setOwnerId(item.getOwnerId());
+        dto.setOwnerId(item.getOwner().getId());
         return dto;
     }
 
@@ -34,14 +34,14 @@ public class ItemMapper {
         dto.setName(item.getName());
         dto.setAvailable(item.getAvailable());
         dto.setDescription(item.getDescription());
-        dto.setOwnerId(item.getOwnerId());
+        dto.setOwnerId(item.getOwner().getId());
         dto.setComments(comments);
         dto.setLastBooking(lastBooking);
         dto.setNextBooking(nextBooking);
         return dto;
     }
 
-    public static Item updateItemFields(Item item, UpdateItemDto updateItem) {
+    public static Item updateItemFields(Item item, UpdateItemDto updateItem, User user) {
         if (updateItem.hasName()) {
             item.setName(updateItem.getName());
         }
@@ -54,7 +54,7 @@ public class ItemMapper {
         }
 
         if (updateItem.hasRequestId()) {
-            item.setRequestId(updateItem.getRequestId());
+            item.setOwner(user);
         }
 
         return item;
@@ -64,7 +64,7 @@ public class ItemMapper {
         ItemForRequestDto dto = new ItemForRequestDto();
         dto.setId(item.getId());
         dto.setName(item.getName());
-        dto.setOwnerId(item.getOwnerId());
+        dto.setOwnerId(item.getOwner().getId());
         return dto;
     }
 }

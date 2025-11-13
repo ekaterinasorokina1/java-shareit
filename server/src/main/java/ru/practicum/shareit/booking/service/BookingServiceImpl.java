@@ -51,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Бронирование с id = " + bookingId + " не найдено"));
 
-        if (!booking.getItem().getOwnerId().equals(userId)) {
+        if (!booking.getItem().getOwner().getId().equals(userId)) {
             throw new ForbiddenException("Изменить статус бронирования может только владелец");
         }
         booking.setStatus(approved ? StatusEnum.APPROVED : StatusEnum.REJECTED);

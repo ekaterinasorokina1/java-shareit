@@ -13,6 +13,7 @@ import ru.practicum.shareit.request.dto.NewRequestDto;
 import ru.practicum.shareit.request.mapper.RequestMapper;
 import ru.practicum.shareit.request.model.Request;
 import ru.practicum.shareit.request.repository.RequestRepository;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
@@ -27,10 +28,11 @@ public class RequestServiceImpl implements RequestService {
 
     @Transactional
     public ItemRequestDto create(Long userId, NewRequestDto requestDto) {
-        checkIfUserExist(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден"));
 
         Request request = requestRepository
-                .save(RequestMapper.mapToRequest(requestDto, userId));
+                .save(RequestMapper.mapToRequest(requestDto, user));
         return RequestMapper.mapToRequestDto(request);
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +22,7 @@ public class Request {
 
     private LocalDateTime created = LocalDateTime.now();
 
-    @Column(name = "requestor_id")
-    private Long requestorId;
+    @ManyToOne
+    @JoinColumn(name = "requestor_id")
+    private User requestor;
 }
